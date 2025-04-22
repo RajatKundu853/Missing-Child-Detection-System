@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Matched Children</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        body { font-family: Arial; background: #f0f4f8; padding: 20px; }
+        h2 { margin-bottom: 20px; }
+        input[type="text"] {
+            width: 300px;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 16px;
+        }
+        table { border-collapse: collapse; width: 100%; background: #fff; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #ddd; }
+        th { background-color: #007BFF; color: white; }
+        .download-btn {
+            padding: 6px 12px;
+            background-color: #28a745;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        .download-btn:hover {
+            background-color: #218838;
+        }
+        .fa-download {
+            margin-right: 6px;
+        }
+        #notFoundMessage {
+            display: none;
+            color: red;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h2>Matched Children Details</h2>
+
+    <input type="text" id="searchInput" onkeyup="searchTable()" placeholder="Search for child name...">
+
+    <table id="matchTable">
+        <thead>
+            <tr>
+                <th>Child Name</th>
+                <th>Finder's Contact</th>
+                <th>Found Location</th>
+                <th>Parent Contact</th>
+                <th>Email</th>
+                <th>Download Image</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for row in matches %}
+        <tr>
+            <td>{{ row[0] }}</td>
+            <td>{{ row[1] }}</td>
+            <td>{{ row[2] }}</td>
+            <td>{{ row[3] }}</td>
+            <td>{{ row[4] }}</td>
+            <td>
+                <a href="{{ url_for('static', filename=row[5].split('static/')[-1].replace('\\', '/')) }}" 
+                   download class="download-btn">
+                   <i class="fa-solid fa-download"></i> Download
+                </a>
+            </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <div id="notFoundMessage">Name not found</div>
+
+    <script>
+        function searchTable() {
+            const input = document.getElementById("searchInput");
+            const filter = input.value.toLowerCase();
+            const table = document.getElementById("matchTable");
+            const tr = table.getElementsByTagName("tr");
+            const notFoundMsg = document.getElementById("notFoundMessage");
+
+            let visibleCount = 0;
+
+            for (let i = 1; i < tr.length; i++) {
+                const td = tr[i].getElementsByTagName("td")[0]; // first column = child name
+                if (td) {
+                    const txtValue = td.textContent || td.innerText;
+                    const isMatch = txtValue.toLowerCase().indexOf(filter) > -1;
+                    tr[i].style.display = isMatch ? "" : "none";
+                    if (isMatch) visibleCount++;
+                }
+            }
+
+            notFoundMsg.style.display = visibleCount === 0 && filter !== "" ? "block" : "none";
+        }
+    </script>
+</body>
+</html>
