@@ -5,7 +5,7 @@ It detect missing child . (Currently in Development)
 1. pip install flask numpy opencv-python secure-smtplib geopy requests
 
 
-2. Unzip sqlite+cmake.rar
+2. Unzip sqlite+cmake.rar  : https://drive.google.com/file/d/1lmZCmb5n0wINcC-iOZxxGw3LQCv27E9v/view?usp=sharing
 3. Move sqlite and cmake folder to C drive separately.
 4. Go to sqlite folder, copy the path & add the path to system variables path section.
 5. Go to cmake/bin folder, copy the path & add the path to system variables path section.
